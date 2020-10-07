@@ -1,0 +1,117 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+//стековая очередь
+
+struct Stack {
+
+	int operand;
+	Stack* next;
+
+public:
+
+	Stack() {
+		operand = 0;
+		next = NULL;
+	}
+
+	~Stack() {}
+
+	void push(int o) {
+		Stack* b = new Stack;
+		b->operand = this->operand;
+		b->next = this->next;
+		this->operand = o;
+		this->next = b;
+	}
+
+	int pop() {
+		int o = this->operand;
+		if (this->next != NULL) {
+			*this = *this->next;
+		}
+		return o;
+	}
+
+	int top() {
+		return operand;
+	}
+};
+
+
+
+class MyStack {
+	Stack* Node = NULL;
+	Stack* tail = NULL;
+	static int count;
+
+public:
+
+	void push(int a) {
+		if (count == 0) {
+			Node = new Stack;
+		}		
+		if (Node == NULL && count != 0) {
+			Node = new Stack;
+			revers(Node, tail);
+			tail = NULL;
+		}
+		Node->push(a);
+		count++;
+	}
+
+	void revers(Stack* a, Stack* b) {
+
+		for (int i = 0; i < count; i++) {
+			a->push(b->pop());
+		}
+	}
+
+	void pop() {
+		if (Node == NULL && count ==0) { cout << "error" << endl; return; }
+		if (tail == NULL) {
+			tail = new Stack;
+			revers(tail, Node);
+			Node = NULL;
+		}
+		if (count == 1) { cout << tail->pop() << endl; Node = NULL; tail = NULL; count--; return; }
+
+		cout << tail->pop() << endl;
+		count--;
+	}
+
+	int get_size() {
+		return count;
+	}
+};
+
+
+int MyStack::count = 0;
+
+int main() {
+	int v;
+	cin >> v;
+	MyStack st;
+
+	for (int i = 0; i < v; i++) {
+		string b;
+		cin >> b;
+
+		if (b == "put") {
+			int a;
+			cin >> a;
+			st.push(a);
+		}
+
+
+		else if (b == "get") {
+			st.pop();
+		}
+		else if (b == "get_size") {
+			cout << st.get_size() << endl;
+		}
+	}
+
+	return 0;
+}
