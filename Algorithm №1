@@ -1,0 +1,129 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+//калькулятор с обратной польской нотацией
+
+struct Stack {
+
+	int operand;
+	Stack* next;
+
+public:
+
+	Stack() {
+		operand = 0;
+		next = NULL;
+	}
+
+	~Stack() {}
+
+	void push(string o) {
+		Stack* b = new Stack;
+		b->operand = this->operand;
+		b->next = this->next;
+		this->operand = stoi(o);
+		this->next = b;
+ 	}
+
+	void push(int o) {
+		Stack* b = new Stack;
+		b->operand = this->operand;
+		b->next = this->next;
+		this->operand = o;
+		this->next = b;
+	}
+
+	int pop() {
+		int o = this->operand;
+		*this = *this->next;
+		return o;
+	}
+
+	int top() {
+		return operand;
+	}
+};
+
+class Calculator {
+private:
+
+	Stack* head ;
+
+public:
+
+	Calculator () {
+		head = new Stack;
+	}
+
+	void calculation(string a) {
+
+		string str = a;
+
+		if (str == "*") {
+
+			int one = head->pop();
+			int two = head->pop();
+			head->push(two*one);
+
+		}
+		else if (str == "-") {
+
+			int one = head->pop();
+			int two = head->pop();
+			head->push(two - one);
+
+		}
+		else if (str == "+") {
+
+			int one = head->pop();
+			int two = head->pop();
+			head->push(two + one);
+
+		}
+		else if (str == "/") {
+
+			int one = head->pop();
+			int two = head->pop();
+			head->push(two / one);
+
+		}
+		else head->push(str);
+	}
+
+		
+	
+
+	void printHead() {
+		cout<<head->top()<<endl;
+	}
+};
+
+
+
+int main() {
+
+	string x;
+	getline(cin, x);
+	string k;
+	Calculator c;
+
+	for (int i = 0; i < x.length(); i++) {
+		if (x[i] != ' ') {
+			k.push_back(x[i]);
+			if (i == x.length() - 1) {
+				c.calculation(k);
+				k.clear();
+				break;
+			}
+		}
+		else {
+			c.calculation(k);
+			k.clear();
+		}
+	}
+
+	c.printHead();
+
+	return 0;
+}
