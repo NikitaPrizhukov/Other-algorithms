@@ -1,0 +1,110 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+//Списочная очередь
+
+struct Queue {
+
+	int people;
+	Queue* indexNext;
+	Queue* indexBack;
+
+};
+
+class MyQueue {
+private:
+	Queue* head;
+	Queue* leg;
+	static int count;
+
+public:
+
+	MyQueue() {
+		head = NULL;
+		leg = NULL;
+		count = 0;
+	}
+
+
+
+	void put(int p) {
+		Queue* w = new Queue();
+		if (head == NULL) {
+			w->people = p;
+			//w->indexNext = head;
+			count++;
+			head = w;
+			leg = w;
+			return;
+		}
+		if (leg == head) {
+			w->people = p;
+			w->indexNext = head;
+			count++;
+			head->indexBack = w;
+			head = w;
+			leg->indexBack = head;
+			return;
+		}
+		w->people = p;
+		w->indexNext = head;
+		count++;
+		head->indexBack = w;
+		head = w;
+	}
+
+	void get() {
+		if (leg == NULL) { cout << "error" << endl; return; }
+		Queue* w = head;
+		w = leg;
+		cout << w->people << endl;
+		if (leg == head) { leg = NULL; head = NULL; count--; return; }
+		if (w->indexBack == head) { leg = head; count--; return; }
+
+		leg = w->indexBack;
+		count--;
+		delete w;
+
+	}
+
+	void size() {
+		cout << count << endl;
+	}
+};
+
+int MyQueue::count = 0;
+
+
+int main() {
+	string v;
+	getline(cin, v);
+	MyQueue st;
+
+	for (int i = 0; i < stoi(v); i++) {
+		string a;
+		getline(cin, a);
+		string b;
+		int in;
+		for (int i = 0; i < a.length(); i++) {
+			if (a[i] == ' ') { in = i + 1; break; }
+			b.push_back(a[i]);
+		}
+		if (b == "put") {
+			b.clear();
+			for (int i = in; i < a.length(); i++) {
+				if (a[i] == '\n') { break; }
+				b.push_back(a[i]);
+			}
+			st.put(stoi(b));
+		}
+		if (b == "get") {
+			st.get();
+		}
+		if (b == "size") {
+			st.size();
+		}
+	}
+
+	return 0;
+}
