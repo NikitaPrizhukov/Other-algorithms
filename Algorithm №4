@@ -1,0 +1,111 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+using namespace std;
+
+//Дек
+
+class Deque {
+
+	int size;
+	int* storage;
+	int start=0;
+	int end=0;
+	int count=0;
+
+public:
+
+	Deque() {
+		storage = new int[10];
+		size = 10;
+	}
+
+	Deque(int s) {
+		size = s;
+		storage = new int[size];
+	}
+
+
+
+	void push_front(int n) {
+		if (size == count) { cout << "error"<<endl; }
+		else if (count == 0) { storage[start] = n; count++; }
+		else {
+			if (start == 0) { start = size - 1; storage[start] = n; count++; }
+			else { start--; storage[start] = n; count++; }
+		}
+	}
+	void push_back(int n)
+	{
+		if (count == size) { cout << "error" << endl; }
+		else if (count == 0) { storage[end] = n; count++; }
+		else {
+			if (end == size - 1) { end = 0; storage[end] = n; count++; }
+			else { end++; storage[end] = n; count++; }
+		}
+	}
+	void pop_front()
+	{
+		int b;
+		if (count != 0 && (start == end)) { b = storage[start]; count--; cout << b << endl; }
+		else if (count == 0) { cout << "error" << endl; }
+		else
+		{
+			b = storage[start];
+			if (start == size - 1) { start = 0; count--; }
+			else { start++; count--; }
+			cout << b << endl;
+		}
+	}
+	void pop_back()
+	{
+		int b;
+		if (count != 0 && (start == end)) {
+			b = storage[end]; count--; cout << b << endl;
+		}
+		else if (count == 0) { cout << "error" << endl; }
+		else
+		{
+			b = storage[end];
+			if (end == 0) { end = size - 1; count--; }
+			else { end--; count--; }
+			cout << b << endl;
+		}
+	}
+};
+
+
+
+int main() {
+	
+	int v;
+	cin >> v;
+	int max;
+	cin >> max;
+	string s;
+	int n;
+	Deque* d = new Deque(max);
+	for (int i = 0; i < v; i++) 
+	{
+		cin >> s;
+		if (s == "push_front")
+		{
+			cin >> n;
+			d->push_front(n);
+		}
+		else if (s == "push_back")
+		{
+			cin >> n;
+			d->push_back(n);
+		}
+		else if (s == "pop_front")
+		{
+			d->pop_front();
+		}
+		else if (s == "pop_back")
+		{
+			d->pop_back();
+		}
+	}
+	return 0;
+}
